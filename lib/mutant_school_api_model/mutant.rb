@@ -35,6 +35,7 @@ module MutantSchoolAPIModel
     # mutants = Mutant.all
     def self.all
       response = HTTP.get(self.base_url)
+      return false if response.code != 200
 
       JSON.parse(response.to_s).map do |attributes_hash|
         Mutant.new attributes_hash
@@ -45,6 +46,7 @@ module MutantSchoolAPIModel
     # m = Mutant.find(3)
     def self.find(id)
       response = HTTP.get(self.base_url + "/#{id}")
+      return false if response.code != 200
       Mutant.new JSON.parse(response.to_s)
     end
 
@@ -90,6 +92,11 @@ module MutantSchoolAPIModel
     # Delete a mutant from the backend
     # m.destroy
     def destroy
+      return false unless persisted?
+      response = HTTP.delete(self.class.base_url + "/#{@id}")
+      return false if response.code != 204
+      @id = nil
+      true
     end
 
     def persisted?
