@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dave Strus"]
   spec.email         = ["dave@getfretless.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = 'Mutant School API wrapper'
+  spec.description   = 'Mutant School API wrapper for use in automated tests.'
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
@@ -30,4 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "minitest-reporters", "~> 1.1"
+  spec.add_development_dependency "pry", "~> 0.10"
+  spec.add_development_dependency "http", "~> 1.0"
 end
