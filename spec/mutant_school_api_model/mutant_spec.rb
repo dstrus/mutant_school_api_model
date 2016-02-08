@@ -53,3 +53,26 @@ describe MutantSchoolAPIModel::Mutant, '#find' do
     # _(actual.empty?).must_equal true
   end
 end
+
+describe MutantSchoolAPIModel::Mutant, '#all' do
+  it 'should return an array of mutants' do
+    # Create a mutant.
+    attributes = {
+      mutant_name: 'Wolverine',
+      real_name: 'Logan',
+      power: 'SNIKT',
+      eligibility_begins_at: '1976-06-11',
+      eligibility_ends_at: '2050-05-03',
+      may_advise_beginning_at: '1990-09-25'
+    }
+    wolverine = Mutant.new attributes
+    wolverine.save
+
+    # Make sure `all` returns an Array.
+    actual = Mutant.all
+    _(actual).must_be_instance_of Array
+
+    # Make sure the first item in the Array is a Mutant.
+    _(actual.first).must_be_instance_of Mutant
+  end
+end
