@@ -13,6 +13,10 @@ describe MutantSchoolAPIModel::Mutant do
     @wolverine = Mutant.new attributes
   end
 
+  after do
+    @wolverine.destroy if @wolverine.persisted?
+  end
+
   describe '#save' do
     it 'creates a new mutant' do
       actual = Mutant.new(@wolverine.save)
