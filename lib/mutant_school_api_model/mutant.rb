@@ -53,6 +53,10 @@ module MutantSchoolAPIModel
 
     def initialize(attr = {})
       # set instance variables from the things in the hash
+      update_attributes(attr)
+    end
+
+    def update_attributes(attr={})
       attr.each do |name, value|
         if self.class.attribute_names.include? name.to_sym
           instance_variable_set("@#{name}", value)
@@ -64,10 +68,15 @@ module MutantSchoolAPIModel
     # m.save
     def save
       if persisted?
+        # Update
         response = HTTP.put(self.class.base_url + "/#{@id}", json: payload)
+        return false if response.code != 200
       else
+        # Create
         response = HTTP.post(self.class.base_url, json: payload)
+        return false if response.code != 201
       end
+      update_attributes JSON.parse(response.to_s)
     end
 
     def to_h
