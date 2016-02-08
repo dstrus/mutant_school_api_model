@@ -1,9 +1,5 @@
 module MutantSchoolAPIModel
-  class Mutant
-
-    def self.base_url
-      'https://mutant-school.herokuapp.com/api/v1/mutants'
-    end
+  class Mutant < MutantSchoolAPIModel::Resource
 
     def self.attribute_names
       [
@@ -34,7 +30,7 @@ module MutantSchoolAPIModel
     # Get all mutants from the backend
     # mutants = Mutant.all
     def self.all
-      response = HTTP.get(self.base_url)
+      response = HTTP.get(self.url)
       return false if response.code != 200
 
       JSON.parse(response.to_s).map do |attributes_hash|
@@ -45,7 +41,7 @@ module MutantSchoolAPIModel
     # Get a single mutant from the backend
     # m = Mutant.find(3)
     def self.find(id)
-      response = HTTP.get(self.base_url + "/#{id}")
+      response = HTTP.get(self.url + "/#{id}")
       return false if response.code != 200
       Mutant.new JSON.parse(response.to_s)
     end
@@ -71,11 +67,11 @@ module MutantSchoolAPIModel
     def save
       if persisted?
         # Update
-        response = HTTP.put(self.class.base_url + "/#{@id}", json: payload)
+        response = HTTP.put(self.class.url + "/#{@id}", json: payload)
         return false if response.code != 200
       else
         # Create
-        response = HTTP.post(self.class.base_url, json: payload)
+        response = HTTP.post(self.class.url, json: payload)
         return false if response.code != 201
       end
       update_attributes JSON.parse(response.to_s)
@@ -93,7 +89,7 @@ module MutantSchoolAPIModel
     # m.destroy
     def destroy
       return false unless persisted?
-      response = HTTP.delete(self.class.base_url + "/#{@id}")
+      response = HTTP.delete(self.class.url + "/#{@id}")
       return false if response.code != 204
       @id = nil
       true
