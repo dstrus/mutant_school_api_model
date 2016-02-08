@@ -63,11 +63,43 @@ module MutantSchoolAPIModel
     # Create or update a mutant in the backend
     # m.save
     def save
+      if persisted?
+        response = HTTP.put(self.class.base_url + "/#{@id}", json: payload)
+      else
+        response = HTTP.post(self.class.base_url, json: payload)
+      end
+    end
+
+    def to_h
+      attribute_collection = {}
+      self.class.attribute_names.each do |name|
+        attribute_collection[name] = send(name)
+      end
+      attribute_collection
     end
 
     # Delete a mutant from the backend
     # m.destroy
     def destroy
+    end
+
+    def persisted?
+      !!@id
+    end
+
+    private
+
+    def payload
+      permitted_attributes = to_h
+
+      # Remove read-only attributes from the hash
+      permitted_attributes.keys.each do |key|
+        if self.class.read_only_attribute_names.include? key
+          permitted_attributes.delete(key)
+        end
+      end
+
+      return { mutant: permitted_attributes }
     end
   end
 end
