@@ -33,7 +33,7 @@ describe MutantSchoolAPIModel::Mutant, '#find' do
     _(actual.to_h).must_equal(wolverine.to_h)
   end
 
-  it 'should return false if there is no such record' do
+  it 'should return false if we look for a record that was just deleted' do
     attributes = {
       mutant_name: 'Wolverine',
       real_name: 'Logan',
