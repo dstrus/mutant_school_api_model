@@ -50,6 +50,7 @@ module MutantSchoolAPIModel
     attr_reader *self.read_only_attribute_names
 
     def initialize(attr = {})
+      @url = self.class.url
       # set instance variables from the things in the hash
       update_attributes(attr)
     end
@@ -67,11 +68,11 @@ module MutantSchoolAPIModel
     def save
       if persisted?
         # Update
-        response = HTTP.put(self.class.url + "/#{@id}", json: payload)
+        response = HTTP.put(url, json: payload)
         return false if response.code != 200
       else
         # Create
-        response = HTTP.post(self.class.url, json: payload)
+        response = HTTP.post(url, json: payload)
         return false if response.code != 201
       end
       update_attributes JSON.parse(response.to_s)
@@ -89,9 +90,10 @@ module MutantSchoolAPIModel
     # m.destroy
     def destroy
       return false unless persisted?
-      response = HTTP.delete(self.class.url + "/#{@id}")
+      response = HTTP.delete(url)
       return false if response.code != 204
       @id = nil
+      @url = self.class.url
       true
     end
 
