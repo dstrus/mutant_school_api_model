@@ -2,15 +2,7 @@ require 'test_helper'
 
 describe MutantSchoolAPIModel::Mutant do
   before do
-    attributes = {
-      mutant_name: 'Wolverine',
-      real_name: 'Logan',
-      power: 'SNIKT',
-      eligibility_begins_at: '1976-06-11',
-      eligibility_ends_at: '2050-05-03',
-      may_advise_beginning_at: '1990-09-25'
-    }
-    @wolverine = Mutant.new attributes
+    @wolverine = MutantFactory.build(:wolverine)
   end
 
   after do
