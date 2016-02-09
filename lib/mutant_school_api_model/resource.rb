@@ -41,6 +41,15 @@ module MutantSchoolAPIModel
           instance_variable_set("@#{name}", value)
         end
       end
+
+      # Some endpoints do not include url in the response.
+      update_url unless attr['url'] || attr[:url]
+      
+      return to_h
+    end
+
+    def update_url
+      @url = self.class.url + "/#{@id}" if persisted?
     end
 
     def save
