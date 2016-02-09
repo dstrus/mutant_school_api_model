@@ -51,9 +51,15 @@ module MutantSchoolAPIModel
     end
 
     def initialize(attr = {})
+      create_attribute_accessors
       @url = self.class.url
       # set instance variables from the things in the hash
       update_attributes(attr)
+    end
+
+    def create_attribute_accessors
+      self.class.send :attr_accessor, *(self.class.attribute_names - self.class.read_only_attribute_names)
+      self.class.send :attr_reader, *self.class.read_only_attribute_names
     end
 
     def update_attributes(attr={})
