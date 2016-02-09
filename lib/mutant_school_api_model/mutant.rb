@@ -1,3 +1,5 @@
+require "mutant_school_api_model/resource"
+
 module MutantSchoolAPIModel
   class Mutant < MutantSchoolAPIModel::Resource
 
