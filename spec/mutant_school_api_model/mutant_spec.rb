@@ -14,6 +14,21 @@ describe MutantSchoolAPIModel::Mutant do
       actual = Mutant.new(@wolverine.save)
       _(actual.to_h).must_equal(@wolverine.to_h)
     end
+
+    it 'updates an existing mutant' do
+      @wolverine.save
+      @wolverine.power = 'new power'
+
+      # Ensure that `save` returns a Hash
+      saved = @wolverine.save
+      _(saved).must_be_instance_of(Hash)
+
+      # Make a Mutant out of that Hash
+      actual = Mutant.new(saved)
+
+      # Ensure the new Term is the same as the old
+      _(actual.to_h).must_equal(@wolverine.to_h)
+    end
   end
 
   describe '#find' do
