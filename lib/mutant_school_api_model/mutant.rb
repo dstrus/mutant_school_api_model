@@ -19,5 +19,9 @@ module MutantSchoolAPIModel
       super << :advisor
     end
 
+    def enrollments
+      @enrollments ||= Enrollment.all(parent: self)
+    end
+
   end
 end

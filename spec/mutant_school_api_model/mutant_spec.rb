@@ -33,10 +33,12 @@ describe MutantSchoolAPIModel::Mutant do
 
   describe '#find' do
     it 'should retrieve the mutant that was just created' do
-      @wolverine.save
+      with_phony_response do
+        @wolverine.save
 
-      actual = Mutant.find(@wolverine.id)
-      _(actual.to_h).must_equal(@wolverine.to_h)
+        actual = Mutant.find(@wolverine.id)
+        _(actual.to_h).must_equal(@wolverine.to_h)
+      end
     end
 
     it 'should return false if we look for a record that was just deleted' do
@@ -62,6 +64,14 @@ describe MutantSchoolAPIModel::Mutant do
 
       # Make sure the first item in the Array is a Mutant.
       _(actual.first).must_be_instance_of Mutant
+    end
+  end
+
+  describe '#enrollments' do
+    it 'should return an Array of Enrollment instances if the mutant has enrollments' do
+      actual = Mutant.find(1).enrollments
+      _(actual).must_be_instance_of Array
+      _(actual.first).must_be_instance_of Enrollment
     end
   end
 end
