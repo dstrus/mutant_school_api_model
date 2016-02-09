@@ -27,6 +27,10 @@ module MutantSchoolAPIModel
       []
     end
 
+    def self.related_object_mappings
+      {}
+    end
+
     def self.attribute_names
       base_attribute_names + model_specific_attribute_names
     end
@@ -66,6 +70,7 @@ module MutantSchoolAPIModel
 
     def update_attributes(attr={})
       attr.each do |name, value|
+        value = instantiate_if_related_object(name, value)
         if self.class.attribute_names.include? name.to_sym
           instance_variable_set("@#{name}", value)
         end
@@ -75,6 +80,13 @@ module MutantSchoolAPIModel
       update_url unless attr['url'] || attr[:url]
 
       return to_h
+    end
+
+    def instantiate_if_related_object(name, value)
+      if self.class.related_object_mappings.keys.include? name.to_sym
+        value = self.class.related_object_mappings[name.to_sym].new(value)
+      end
+      value
     end
 
     def update_url
