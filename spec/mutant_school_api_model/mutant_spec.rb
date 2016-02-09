@@ -32,13 +32,22 @@ describe MutantSchoolAPIModel::Mutant do
   end
 
   describe '#find' do
-    it 'should retrieve the mutant that was just created' do
-      with_phony_response do
-        @wolverine.save
+    it 'should invoke HTTP.get with the correct URL' do
+      @wolverine.save
 
-        actual = Mutant.find(@wolverine.id)
-        _(actual.to_h).must_equal(@wolverine.to_h)
-      end
+      HTTP.expects(:get).with(Mutant.url + "/#{@wolverine.id}").returns(stub(
+        code: 200,
+        to_s: @wolverine.to_h.to_json
+      ))
+
+      Mutant.find(@wolverine.id)
+    end
+
+    it 'should retrieve the mutant that was just created' do
+      @wolverine.save
+
+      actual = Mutant.find(@wolverine.id)
+      _(actual.to_h).must_equal(@wolverine.to_h)
     end
 
     it 'should return false if we look for a record that was just deleted' do
