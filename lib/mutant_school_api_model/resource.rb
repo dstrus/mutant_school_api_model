@@ -8,8 +8,10 @@ module MutantSchoolAPIModel
       'https://mutant-school.herokuapp.com/api/v1'
     end
 
-    def self.url
-      self.base_url + "/#{resource_name}s"
+    def self.url(options = {})
+      parent = options[:parent]
+      base = (parent && parent.url) || base_url
+      "#{base}/#{resource_name}s"
     end
 
     def self.base_attribute_names
@@ -34,8 +36,8 @@ module MutantSchoolAPIModel
     end
 
     # Retrieve all records of the current resource type
-    def self.all
-      response = HTTP.get(url)
+    def self.all(options = {})
+      response = HTTP.get(url(parent: options[:parent]))
       return false if response.code != 200
 
       JSON.parse(response.to_s).map do |attributes_hash|
