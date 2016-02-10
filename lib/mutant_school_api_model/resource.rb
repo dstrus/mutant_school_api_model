@@ -63,8 +63,8 @@ module MutantSchoolAPIModel
     end
 
     def self.attribute_names(*names)
-      @model_attribute_names ||= ([] + names)
-      base_attribute_names + @model_attribute_names
+      @model_attribute_names = @model_attribute_names ? (@model_attribute_names + names) : names
+      @model_attribute_names + read_only_attribute_names
     end
 
     def self.read_only_attribute_names(*names)
