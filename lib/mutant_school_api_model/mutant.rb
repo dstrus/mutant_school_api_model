@@ -3,6 +3,8 @@ require "mutant_school_api_model/resource"
 module MutantSchoolAPIModel
   class Mutant < MutantSchoolAPIModel::Resource
 
+    has_many :enrollments
+
     def self.model_specific_attribute_names
       [
         :mutant_name,
@@ -17,10 +19,6 @@ module MutantSchoolAPIModel
 
     def self.read_only_attribute_names
       super << :advisor
-    end
-
-    def enrollments
-      @enrollments ||= Enrollment.all(parent: self)
     end
 
   end
