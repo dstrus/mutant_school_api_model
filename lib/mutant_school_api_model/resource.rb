@@ -27,6 +27,18 @@ module MutantSchoolAPIModel
       end
     end
 
+    def self.belongs_to(name, options={})
+      class_name = options[:class_name] || name.to_s.capitalize
+      var_name = "@#{name}"
+
+      @relations ||= {}
+      @relations[name] = class_name
+    end
+
+    def self.relations
+      @relations ||= {}
+    end
+
     def self.resource_name
       self.name.split('::').last.downcase
     end
@@ -52,10 +64,6 @@ module MutantSchoolAPIModel
 
     def self.model_specific_attribute_names
       []
-    end
-
-    def self.related_object_mappings
-      {}
     end
 
     def self.attribute_names
@@ -110,8 +118,9 @@ module MutantSchoolAPIModel
     end
 
     def instantiate_if_related_object(name, value)
-      if self.class.related_object_mappings.keys.include? name.to_sym
-        value = self.class.related_object_mappings[name.to_sym].new(value)
+      if self.class.relations.keys.include? name.to_sym
+        klass = Object::const_get(self.class.relations[name.to_sym])
+        value = klass.new(value)
       end
       value
     end
