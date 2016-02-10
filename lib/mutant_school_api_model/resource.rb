@@ -31,8 +31,8 @@ module MutantSchoolAPIModel
       class_name = options[:class_name] || name.to_s.capitalize
       var_name = "@#{name}"
 
-      @relations ||= {}
-      @relations[name] = class_name
+      relations[name] = class_name
+      attr_reader name
     end
 
     def self.relations
@@ -105,7 +105,7 @@ module MutantSchoolAPIModel
 
     def update_attributes(attr={})
       attr.each do |name, value|
-        value = instantiate_if_related_object(name, value)
+        instantiate_if_related_object(name, value)
         if self.class.attribute_names.include? name.to_sym
           instance_variable_set("@#{name}", value)
         end
@@ -121,8 +121,8 @@ module MutantSchoolAPIModel
       if self.class.relations.keys.include? name.to_sym
         klass = Object::const_get(self.class.relations[name.to_sym])
         value = klass.new(value)
+        instance_variable_set("@#{name}", value)
       end
-      value
     end
 
     def update_url
