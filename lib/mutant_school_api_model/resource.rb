@@ -62,12 +62,9 @@ module MutantSchoolAPIModel
       ]
     end
 
-    def self.model_specific_attribute_names
-      []
-    end
-
-    def self.attribute_names
-      base_attribute_names + model_specific_attribute_names
+    def self.attribute_names(*names)
+      @model_attribute_names ||= ([] + names)
+      base_attribute_names + @model_attribute_names
     end
 
     def self.read_only_attribute_names
