@@ -67,8 +67,12 @@ module MutantSchoolAPIModel
       base_attribute_names + @model_attribute_names
     end
 
-    def self.read_only_attribute_names
-      base_attribute_names
+    def self.read_only_attribute_names(*names)
+      if @read_only_attribute_names
+        @read_only_attribute_names + names
+      else
+        @read_only_attribute_names = base_attribute_names
+      end
     end
 
     # Retrieve all records of the current resource type

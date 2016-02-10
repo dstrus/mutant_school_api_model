@@ -8,9 +8,7 @@ module MutantSchoolAPIModel
       :eligibility_begins_at, :eligibility_ends_at,
       :may_advise_beginning_at, :advisor
 
-    def self.read_only_attribute_names
-      super << :advisor
-    end
+    read_only_attribute_names :advisor
 
   end
 end
