@@ -17,6 +17,14 @@ module MutantSchoolAPIModel
           instance_variable_set(var_name, klass.all(parent: self))
         end
       end
+
+      define_method "#{name}=" do |value|
+        if value.is_a?(Array)
+          instance_variable_set(var_name, value)
+        else
+          raise TypeError, "#{name} must be an Array."
+        end
+      end
     end
 
     def self.resource_name
