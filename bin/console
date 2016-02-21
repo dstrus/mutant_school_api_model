@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path('../../', __FILE__)
 
 require "bundler/setup"
 require "mutant_school_api_model"
